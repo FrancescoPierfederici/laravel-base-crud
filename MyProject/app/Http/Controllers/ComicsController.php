@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\comic;
+use App\Comic;
 class ComicsController extends Controller
 {
     /**
@@ -14,6 +14,11 @@ class ComicsController extends Controller
     public function index()
     {
         //
+            $comics = Comic::all();
+    
+            return view('comics.index', ['comics'=> $comics]);
+        
+    
     }
 
     /**
@@ -38,16 +43,18 @@ class ComicsController extends Controller
         //
         $data = $request->all();
 
-        $newComic = new ComicsController;  
-        $newComic->title = $request['title'];
-        $newComic->description = $request['description'];
-        $newComic->thumb = $request['thumb'];
-        $newComic->price = $request['price'];
-        $newComic->series = $request['series'];
-        $newComic->sale_date = $request['sale_date'];
-        $newComic->type = $request['type'];
+        $newComic = new Comic;  
+        $newComic->title = $data['title'];
+        $newComic->description = $data['description'];
+        $newComic->thumb = $data['thumb'];
+        $newComic->price = $data['price'];
+        $newComic->series = $data['series'];
+        $newComic->sale_date = $data['sale_date'];
+        $newComic->type = $data['type'];
 
         $newComic->save();
+
+        return redirect()->route('comics.show', $newComic->id);
     }
 
     /**
@@ -59,6 +66,8 @@ class ComicsController extends Controller
     public function show($id)
     {
         //
+        $comic = comic::find($id);
+        return view('comics.show', [ "comic"=>$comic]);
     }
 
     /**
